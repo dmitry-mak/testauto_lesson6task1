@@ -28,17 +28,22 @@ public class CardToCardTransferTest {
         verificationPage.verifyLogin(verificationCode.getCode());
 
         var dashboardPage = new DashboardPage();
+
         String firstCardID = "92df3f1c-a033-48e6-8390-206f6b1f56c0";
         String secondCardID = "0f3f5c2a-249e-4c3d-8287-09f7a039391d";
+
         String firstCardNumber = dashboardPage.getCardNumberByID(firstCardID);
         String secondCardNumber = dashboardPage.getCardNumberByID(secondCardID);
         int startBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCardID);
         int startBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCardID);
 
+//        выбираем карты для пополнения:
         dashboardPage.replenishCard(secondCardID);
 
         var transferPage = new TransferPage();
         int transferAmount = 1000;
+
+//        заполняем форму перевода: сумму и номер карты с которой должен списаться перевод
         transferPage.fillTransferForm(transferAmount, firstCardNumber);
 
         int finishBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCardID);

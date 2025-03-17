@@ -13,13 +13,8 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class DashboardPage {
 
-    //    private final ElementsCollection cards = $$("[data-test-id='card-balance'] div");
     private final ElementsCollection cards = $$("li.list__item div");
 
-
-    private final SelenideElement firstCardReplenishButton = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d']");
-
-    private final SelenideElement secondCardReplenishButton = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d']");
 
     public DashboardPage() {
         $("[data-test-id='dashboard']")
@@ -60,6 +55,4 @@ public class DashboardPage {
 
         return Integer.parseInt(value);
     }
-
-
 }
