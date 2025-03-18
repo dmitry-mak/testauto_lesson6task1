@@ -21,7 +21,7 @@ public class TransferPage {
 
     public void fillTransferForm(int amount, String fromCard) {
         amountField.setValue(String.valueOf(amount));
-        fromField.setValue("5559 0000 0000 " + fromCard);
+        fromField.setValue(fromCard);
         acceptButton.click();
     }
 }

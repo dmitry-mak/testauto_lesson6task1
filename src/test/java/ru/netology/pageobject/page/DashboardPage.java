@@ -27,13 +27,13 @@ public class DashboardPage {
     }
 
     //    метод получения номера карты по cardID
-    public String getCardNumberByID(String cardID) {
-        String text = findCardByID(cardID).text();
-        String cardNumberStart = "**** **** **** ";
-        int start = text.indexOf(cardNumberStart) + cardNumberStart.length();
-        int finish = text.indexOf(",", start); // Ищем запятую после номера карты
-        return text.substring(start, finish).trim(); // Возвращаем номер карты
-    }
+//    public String getCardNumberByID(String cardID) {
+//        String text = findCardByID(cardID).text();
+//        String cardNumberStart = "**** **** **** ";
+//        int start = text.indexOf(cardNumberStart) + cardNumberStart.length();
+//        int finish = text.indexOf(",", start); // Ищем запятую после номера карты
+//        return text.substring(start, finish).trim(); // Возвращаем номер карты
+//    }
 
     //     метод поиска карты по ID в списке элементов data-test-id
     private SelenideElement findCardByID(String cardID) {
@@ -41,8 +41,9 @@ public class DashboardPage {
     }
 
     //    пополнение карты
-    public void replenishCard(String cardId) {
+    public TransferPage replenishCard(String cardId) {
         $("[data-test-id='" + cardId + "'] button[data-test-id='action-deposit']").click();
+        return new TransferPage();
     }
 
 

@@ -3,6 +3,7 @@ package ru.netology.pageobject.test;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
+import ru.netology.pageobject.data.DataGenerator;
 import ru.netology.pageobject.page.*;
 
 import java.time.Duration;
@@ -25,31 +26,27 @@ public class CardToCardTransferTest {
         var loginPage = new LoginPageWithFields();
         var verificationPage = loginPage.validLogin(info);
 
-        verificationPage.verifyLogin(verificationCode.getCode());
+        var dashboardPage = verificationPage.verifyLogin(verificationCode.getCode());
 
-        var dashboardPage = new DashboardPage();
+        var firstCard = DataGenerator.getFirstCardInfo();
+        var secondCard = DataGenerator.getSecondCardInfo();
 
-        String firstCardID = "92df3f1c-a033-48e6-8390-206f6b1f56c0";
-        String secondCardID = "0f3f5c2a-249e-4c3d-8287-09f7a039391d";
-
-        String firstCardNumber = dashboardPage.getCardNumberByID(firstCardID);
-        String secondCardNumber = dashboardPage.getCardNumberByID(secondCardID);
-        int startBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCardID);
-        int startBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCardID);
+        int startBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCard.getCardId());
+        int startBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCard.getCardId());
 
 //        выбираем карты для пополнения:
-        dashboardPage.replenishCard(secondCardID);
 
-        var transferPage = new TransferPage();
-        int transferAmount = 1000;
+        var transferPage = dashboardPage.replenishCard(firstCard.getCardId());
+
+        int transferAmount = startBalanceFirstCard / 2;
 
 //        заполняем форму перевода: сумму и номер карты с которой должен списаться перевод
-        transferPage.fillTransferForm(transferAmount, firstCardNumber);
+        transferPage.fillTransferForm(transferAmount, secondCard.getCardNumber());
 
-        int finishBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCardID);
-        int finishBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCardID);
+        int finishBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCard.getCardId());
+        int finishBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCard.getCardId());
 
-        assert finishBalanceFirstCard == startBalanceFirstCard - transferAmount;
-        assert finishBalanceSecondCard == startBalanceSecondCard + transferAmount;
+        assert finishBalanceFirstCard == startBalanceFirstCard + transferAmount;
+        assert finishBalanceSecondCard == startBalanceSecondCard - transferAmount;
     }
 }
