@@ -17,8 +17,9 @@ public class VerificationPage {
                 .shouldBe(Condition.visible, Duration.ofSeconds(5));
     }
 
-    public void verifyLogin(String code) {
+    public DashboardPage verifyLogin(String code) {
         verificationCode.setValue(code);
         verifyButton.click();
+        return new DashboardPage();
     }
 }
