@@ -63,12 +63,20 @@ public class CardToCardTransferTest {
         var firstCard = DataGenerator.getFirstCardInfo();
         var secondCard = DataGenerator.getSecondCardInfo();
 
+        int startBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCard.getCardId());
         int startBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCard.getCardId());
 
         var transferPage = dashboardPage.replenishCard(firstCard.getCardId());
         int transferAmount = startBalanceSecondCard * 2;
 
         transferPage.fillTransferForm(transferAmount, secondCard.getCardNumber());
+
+        //        Проверяем наличие предупреждения об ошибке:
         transferPage.errorNotificationIsDisplayed();
+
+        //        Проверяем, что операция, которая может привести к негативному балансу, не прошла,
+        //        и балансы карт остались без изменений
+        dashboardPage.checkCardBalance(firstCard.getCardId(), startBalanceFirstCard);
+        dashboardPage.checkCardBalance(secondCard.getCardId(), startBalanceSecondCard);
     }
 }
