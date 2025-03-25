@@ -56,4 +56,9 @@ public class DashboardPage {
 
         return Integer.parseInt(value);
     }
+
+    public void checkCardBalance(String cardId, int expectedBalance) {
+        findCardByID(cardId).shouldHave(Condition.text(String.valueOf(expectedBalance)), Duration.ofSeconds(5));
+    }
+
 }

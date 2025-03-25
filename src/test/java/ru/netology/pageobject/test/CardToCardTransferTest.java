@@ -2,6 +2,7 @@ package ru.netology.pageobject.test;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.netology.pageobject.data.DataGenerator;
 import ru.netology.pageobject.page.*;
@@ -43,10 +44,7 @@ public class CardToCardTransferTest {
 //        заполняем форму перевода: сумму и номер карты с которой должен списаться перевод
         transferPage.fillTransferForm(transferAmount, secondCard.getCardNumber());
 
-        int finishBalanceFirstCard = dashboardPage.getCardBalanceByID(firstCard.getCardId());
-        int finishBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCard.getCardId());
-
-        assert finishBalanceFirstCard == startBalanceFirstCard + transferAmount;
-        assert finishBalanceSecondCard == startBalanceSecondCard - transferAmount;
+        dashboardPage.checkCardBalance(firstCard.getCardId(), startBalanceFirstCard + transferAmount);
+        dashboardPage.checkCardBalance(secondCard.getCardId(), startBalanceSecondCard - transferAmount);
     }
 }
