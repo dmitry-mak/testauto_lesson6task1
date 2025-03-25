@@ -12,6 +12,7 @@ public class TransferPage {
     private final SelenideElement amountField = $("[data-test-id='amount'] input.input__control");
     private final SelenideElement fromField = $("[data-test-id='from'] input.input__control");
     private final SelenideElement acceptButton = $("[data-test-id='action-transfer']");
+    private final SelenideElement errorNotification = $("[data-test-id='error-notification']");
 
 
     public TransferPage() {
@@ -23,5 +24,9 @@ public class TransferPage {
         amountField.setValue(String.valueOf(amount));
         fromField.setValue(fromCard);
         acceptButton.click();
+    }
+
+    public void errorNotificationIsDisplayed() {
+        errorNotification.shouldBe(Condition.visible, Duration.ofSeconds(5)).shouldHave(Condition.text("Ошибка"));
     }
 }

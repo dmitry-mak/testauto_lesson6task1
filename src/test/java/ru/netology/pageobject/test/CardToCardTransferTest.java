@@ -47,4 +47,28 @@ public class CardToCardTransferTest {
         dashboardPage.checkCardBalance(firstCard.getCardId(), startBalanceFirstCard + transferAmount);
         dashboardPage.checkCardBalance(secondCard.getCardId(), startBalanceSecondCard - transferAmount);
     }
+
+    @Test
+    public void shouldSendErrorMesageForAmountBiggerBalance() {
+        var info = getAuthInfo();
+        var verificationCode = getVerificationCode(info);
+
+        Selenide.open("http://localhost:9999/");
+
+        var loginPage = new LoginPageWithFields();
+        var verificationPage = loginPage.validLogin(info);
+
+        var dashboardPage = verificationPage.verifyLogin(verificationCode.getCode());
+
+        var firstCard = DataGenerator.getFirstCardInfo();
+        var secondCard = DataGenerator.getSecondCardInfo();
+
+        int startBalanceSecondCard = dashboardPage.getCardBalanceByID(secondCard.getCardId());
+
+        var transferPage = dashboardPage.replenishCard(firstCard.getCardId());
+        int transferAmount = startBalanceSecondCard * 2;
+
+        transferPage.fillTransferForm(transferAmount, secondCard.getCardNumber());
+        transferPage.errorNotificationIsDisplayed();
+    }
 }
